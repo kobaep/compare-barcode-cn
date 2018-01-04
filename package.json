@@ -1,0 +1,24 @@
+{
+  "name": "compare-barcode-cn",
+  "version": "1.0.0",
+  "description": "eclectron project",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kobaep/compare-barcode-cn.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kobaep/compare-barcode-cn/issues"
+  },
+  "homepage": "https://github.com/kobaep/compare-barcode-cn#readme",
+  "devDependencies": {
+    "bootstrap": "^3.3.7",
+    "font-awesome": "^4.7.0",
+    "jquery": "^3.2.1"
+  }
+}
