@@ -122,14 +122,16 @@
         var partMaster = '';
         var batchMasterNo = '';
         var masterQty = 0;
+        var masterQtyStart = 0;
         
         $('#masterBarcode').keypress(function(e) {
           if(e.which == 13) {
             barcodeMaster = $('#masterBarcode').val();
-            if (barcodeMaster.length === 47) {
+            if (barcodeMaster.length > 44) {
               partMaster = barcodeMaster.substring(0, 15);
               batchMasterNo = barcodeMaster.substring(15, 25);
-              masterQty = parseInt(barcodeMaster.substring(35, 43));
+              masterQty = parseInt(barcodeMaster.substring(35, barcodeMaster.length));
+              masterQtyStart = masterQty;
               $('#partMaster').text(partMaster);
               $('#masterQty').text(masterQty);
               $('#masterBarcodeDiv').addClass('hidden');
@@ -146,12 +148,36 @@
         $('#compareBarcode').keypress(function(e) {
           if(e.which == 13) {
             var barcodeCompare = $('#compareBarcode').val();
-            if (barcodeCompare.length === 47) {
+            if (barcodeCompare.length > 44) {
               var partCompare = barcodeCompare.substring(0, 15);
-              var qtyCompare = parseInt(barcodeCompare.substring(35, 43));
+              var batchCompareNo = barcodeCompare.substring(15, 25);
+              var qtyCompare = parseInt(barcodeCompare.substring(35, barcodeCompare.length));
 
               if (partMaster == partCompare) {
                 masterQty = masterQty - qtyCompare;
+
+                var formData = {
+                  "partMaster": partMaster,
+                  "qtyMaster": masterQtyStart+'',
+                  "partCompare": partCompare,
+                  "batchCompare": batchCompareNo,
+                  "qtyCompare": qtyCompare+''
+                }
+
+                $.ajax({
+                  type: "POST",
+                  url: "http://localhost:8090/save",
+                  processData: false,
+                  async: true,
+                  data: JSON.stringify(formData),
+                  success: function(data){
+                    console.log(data["status"]);
+                  },
+                  error: function(data){
+                    alert("save error.")
+                  }
+                });
+                
                 $('#partCompare').text(partCompare);
                 $('#qtyCompare').text(qtyCompare);
                 $('#totalQty').text(masterQty);
